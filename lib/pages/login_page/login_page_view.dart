@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:food_ecom_sample/image_asset.dart';
 import 'package:food_ecom_sample/pages/login_page/login_page.dart';
 import 'package:food_ecom_sample/pages/login_page/login_page_view_model.dart';
+import 'package:food_ecom_sample/router/router.gr.dart';
 import 'package:food_ecom_sample/themes/color_theme.dart';
 
 class LoginPageView extends State<LoginPage> {
@@ -41,7 +43,9 @@ class LoginPageView extends State<LoginPage> {
           ),
         ),
         Container(
-          child: viewModel.isSignIn ? signInSection() : signUpSection(),
+          child: viewModel.selectedTab == "signIn"
+              ? signInSection()
+              : signUpSection(),
         ),
       ],
     );
@@ -52,17 +56,18 @@ class LoginPageView extends State<LoginPage> {
       onTap: () {
         setState(() {
           if (type == "signIn") {
-            viewModel.isSignIn = true;
+            viewModel.selectedTab = "signIn";
           } else {
-            viewModel.isSignIn = false;
+            viewModel.selectedTab = "signUp";
+            // viewModel.isSignIn = false;
           }
         });
       },
       child: Container(
         height: 50,
         alignment: Alignment.center,
-        decoration: ((!viewModel.isSignIn && type == "signUp") ||
-                (viewModel.isSignIn && type == "signIn"))
+        decoration: ((viewModel.selectedTab == "signUp" && type == "signUp") ||
+                (viewModel.selectedTab == "signIn" && type == "signIn"))
             ? BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -75,8 +80,8 @@ class LoginPageView extends State<LoginPage> {
           style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
-              color: ((!viewModel.isSignIn && type == "signUp") ||
-                      (viewModel.isSignIn && type == "signIn"))
+              color: ((viewModel.selectedTab == "signUp" && type == "signUp") ||
+                      (viewModel.selectedTab == "signIn" && type == "signIn"))
                   ? ColorTheme.colorTheme.primaryColor
                   : ColorTheme.colorTheme.primaryLightColor),
         ),
@@ -98,7 +103,12 @@ class LoginPageView extends State<LoginPage> {
 
   Widget signInSection() {
     return Container(
-      child: Text("Sign In"),
+      child: ElevatedButton(
+        onPressed: () {
+          context.router.push(HomeRoute());
+        },
+        child: Text("Click me"),
+      ),
     );
   }
 
