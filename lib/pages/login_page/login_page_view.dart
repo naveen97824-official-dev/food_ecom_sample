@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,12 @@ import 'package:food_ecom_sample/themes/color_theme.dart';
 
 class LoginPageView extends State<LoginPage> {
   LoginPageViewModel viewModel = LoginPageViewModel();
+  @override
+  void initState() {
+    super.initState();
+    viewModel.loginButtonStreamController = StreamController<bool>.broadcast();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,11 +111,57 @@ class LoginPageView extends State<LoginPage> {
 
   Widget signInSection() {
     return Container(
-      child: ElevatedButton(
-        onPressed: () {
-          context.router.push(HomeRoute());
-        },
-        child: Text("Click me"),
+      padding: EdgeInsets.symmetric(horizontal: 25),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 20,
+          ),
+          TextField(
+            decoration: InputDecoration(
+                border: OutlineInputBorder(), hintText: "Email Address"),
+            controller: viewModel.emailController,
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextField(
+            decoration: InputDecoration(
+                border: OutlineInputBorder(), hintText: "Password"),
+            controller: viewModel.passwordController,
+            onChanged: (value) {
+              // setState(() {});
+              viewModel.loginButtonStreamController.add(true);
+            },
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          StreamBuilder<dynamic>(
+            stream: viewModel.loginButtonStreamController.stream,
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              // TODO: the data is not ready, show a loading indicator
+              print(snapshot.data);
+              return ElevatedButton(
+                onPressed: () {
+                  if (viewModel.validateLoginButton())
+                    context.router.push(HomeRoute());
+                },
+                style: ButtonStyle(
+                  backgroundColor: viewModel.validateLoginButton()
+                      ? WidgetStateProperty.all(
+                          ColorTheme.colorTheme.primaryColor)
+                      : WidgetStateProperty.all(
+                          ColorTheme.colorTheme.primaryLightColor),
+                ),
+                child: Text("Click me"),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
