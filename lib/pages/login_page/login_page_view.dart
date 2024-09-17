@@ -26,7 +26,8 @@ class LoginPageView extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           imageSection(),
-          tabSection(),
+          Expanded(child: tabSection()),
+          otherSignSection(),
         ],
       ),
     );
@@ -50,11 +51,7 @@ class LoginPageView extends State<LoginPage> {
             ],
           ),
         ),
-        Container(
-          child: viewModel.selectedTab == "signIn"
-              ? signInSection()
-              : signUpSection(),
-        ),
+        viewModel.selectedTab == "signIn" ? signInSection() : signUpSection(),
       ],
     );
   }
@@ -99,12 +96,18 @@ class LoginPageView extends State<LoginPage> {
 
   Widget imageSection() {
     return Container(
-      // alignment: Alignment.topLeft,
-      height: 200,
-      width: 200,
-      child: Image.asset(
-        ImageAssets.loginFoodDish,
-        fit: BoxFit.cover,
+      width: MediaQuery.of(context).size.width,
+      child: Container(
+        alignment: viewModel.selectedTab == "signUp"
+            ? Alignment.topRight
+            : Alignment.topLeft,
+        // alignment: Alignment.topLeft,
+        height: 200,
+        width: 200,
+        child: Image.asset(
+          ImageAssets.loginFoodDish,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -117,51 +120,129 @@ class LoginPageView extends State<LoginPage> {
           SizedBox(
             height: 20,
           ),
-          TextField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), hintText: "Email Address"),
-            controller: viewModel.emailController,
-            onChanged: (value) {
-              setState(() {});
-            },
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          TextField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(), hintText: "Password"),
-            controller: viewModel.passwordController,
-            onChanged: (value) {
-              // setState(() {});
-              viewModel.loginButtonStreamController.add(true);
-            },
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          StreamBuilder<dynamic>(
-            stream: viewModel.loginButtonStreamController.stream,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              // TODO: the data is not ready, show a loading indicator
-              print(snapshot.data);
-              return ElevatedButton(
-                onPressed: () {
-                  if (viewModel.validateLoginButton())
-                    context.router.push(HomeRoute());
-                },
-                style: ButtonStyle(
-                  backgroundColor: viewModel.validateLoginButton()
-                      ? WidgetStateProperty.all(
-                          ColorTheme.colorTheme.primaryColor)
-                      : WidgetStateProperty.all(
-                          ColorTheme.colorTheme.primaryLightColor),
+          loginDetailsSection(),
+        ],
+      ),
+    );
+  }
+
+  Widget loginDetailsSection() {
+    return Column(
+      children: <Widget>[
+        TextField(
+          decoration: InputDecoration(
+              border: OutlineInputBorder(), hintText: "Email Address"),
+          controller: viewModel.emailController,
+          onChanged: (value) {
+            setState(() {});
+          },
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        TextField(
+          decoration: InputDecoration(
+              border: OutlineInputBorder(), hintText: "Password"),
+          controller: viewModel.passwordController,
+          onChanged: (value) {
+            // setState(() {});
+            viewModel.loginButtonStreamController.add(true);
+          },
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        StreamBuilder<dynamic>(
+          stream: viewModel.loginButtonStreamController.stream,
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            // TODO: the data is not ready, show a loading indicator
+            print(snapshot.data);
+            return ElevatedButton(
+              onPressed: () {
+                if (viewModel.validateLoginButton()) {
+                  context.router.push(LandingRoute());
+                }
+              },
+              style: ButtonStyle(
+                backgroundColor: viewModel.validateLoginButton()
+                    ? WidgetStateProperty.all(
+                        ColorTheme.colorTheme.primaryColor)
+                    : WidgetStateProperty.all(
+                        ColorTheme.colorTheme.primaryLightColor),
+              ),
+              child: Text("Click me"),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget otherSignSection() {
+    return Container(
+      height: 200,
+      child: Column(
+        children: [
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Divider(
+                  color: ColorTheme.colorTheme.primaryTextColor,
                 ),
-                child: Text("Click me"),
-              );
-            },
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text("or"),
+              ),
+              Expanded(
+                child: Divider(
+                  color: ColorTheme.colorTheme.primaryTextColor,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text("Sign in using; "),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              otherOptionsButton(ImageAssets.google, 30),
+              SizedBox(
+                width: 14,
+              ),
+              otherOptionsButton(ImageAssets.facebook, 50),
+              SizedBox(
+                width: 14,
+              ),
+              otherOptionsButton(ImageAssets.twitter, 30),
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget otherOptionsButton(String image, double height) {
+    return InkWell(
+      child: Container(
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: ColorTheme.colorTheme.primaryTextColor,
+            blurRadius: 8.0, // soften the shadow
+          ),
+        ], shape: BoxShape.circle),
+        child: CircleAvatar(
+          backgroundColor: ColorTheme.colorTheme.whiteColor,
+          child: Image.asset(
+            image,
+            height: height,
+          ),
+        ),
       ),
     );
   }
