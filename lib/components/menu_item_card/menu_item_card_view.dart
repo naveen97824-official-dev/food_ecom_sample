@@ -26,12 +26,14 @@ class MenuItemCardView extends State<MenuItemCard> {
                 CircleAvatar(
                   radius: 50,
                   backgroundColor: ColorTheme.colorTheme.whiteColor,
-                  backgroundImage: Image.network(
-                          "https://img.freepik.com/free-photo/salad-from-tomatoes-cucumber-red-onions-lettuce-leaves-healthy-summer-vitamin-menu-vegan-vegetable-food-vegetarian-dinner-table-top-view-flat-lay_2829-6482.jpg")
-                      .image,
+                  // backgroundImage: Image.network(
+                  //         "https://img.freepik.com/free-photo/salad-from-tomatoes-cucumber-red-onions-lettuce-leaves-healthy-summer-vitamin-menu-vegan-vegetable-food-vegetarian-dinner-table-top-view-flat-lay_2829-6482.jpg")
+                  //     .image,
+                  backgroundImage: Image.network(widget.menu.image!).image,
                 ),
                 Text(
-                  widget.menu.name ?? "Fruit salad",
+                  widget.menu.title ?? "Fruit salad",
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       color: ColorTheme.colorTheme.primaryTextColor,
                       fontSize: 14,

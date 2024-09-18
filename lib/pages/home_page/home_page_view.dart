@@ -19,6 +19,7 @@ class HomePageView extends State<HomePage> {
         .map<Menu>((json) => Menu.fromJson(json))
         .toList();
     print(viewModel.menuList);
+    viewModel.getAllProducts();
   }
 
   @override
@@ -146,17 +147,23 @@ class HomePageView extends State<HomePage> {
           //     menu: viewModel.menuList[0],
           //   ),
           // ),
-          Row(
-            children: viewModel.menuList
-                .map((eachMenu) => InkWell(
-                      onTap: () {
-                        context.router.push(MenuDetailRoute());
-                      },
-                      child: MenuItemCard(
-                        menu: eachMenu,
-                      ),
-                    ))
-                .toList(),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: viewModel.productList
+                  .map((eachMenu) => InkWell(
+                        onTap: () {
+                          context.router.push(MenuDetailRoute());
+                        },
+                        child: SizedBox(
+                          width: 120,
+                          child: MenuItemCard(
+                            menu: eachMenu,
+                          ),
+                        ),
+                      ))
+                  .toList(),
+            ),
           ),
         ],
       ),

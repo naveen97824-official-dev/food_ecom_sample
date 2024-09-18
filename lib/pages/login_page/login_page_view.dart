@@ -8,6 +8,7 @@ import 'package:food_ecom_sample/image_asset.dart';
 import 'package:food_ecom_sample/pages/login_page/login_page.dart';
 import 'package:food_ecom_sample/pages/login_page/login_page_view_model.dart';
 import 'package:food_ecom_sample/router/router.gr.dart';
+import 'package:food_ecom_sample/services/product/product_service.dart';
 import 'package:food_ecom_sample/themes/color_theme.dart';
 
 class LoginPageView extends State<LoginPage> {
@@ -134,6 +135,7 @@ class LoginPageView extends State<LoginPage> {
               border: OutlineInputBorder(), hintText: "Email Address"),
           controller: viewModel.emailController,
           onChanged: (value) {
+            viewModel.userDetail.emailId = value;
             setState(() {});
           },
         ),
@@ -146,6 +148,7 @@ class LoginPageView extends State<LoginPage> {
           controller: viewModel.passwordController,
           onChanged: (value) {
             // setState(() {});
+            viewModel.userDetail.password = value;
             viewModel.loginButtonStreamController.add(true);
           },
         ),
@@ -160,6 +163,7 @@ class LoginPageView extends State<LoginPage> {
             return ElevatedButton(
               onPressed: () {
                 if (viewModel.validateLoginButton()) {
+                  // viewModel.getAllProducts();
                   context.router.push(LandingRoute());
                 }
               },
