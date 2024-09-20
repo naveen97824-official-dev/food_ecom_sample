@@ -16,4 +16,15 @@ class ProductService {
       return null;
     }
   }
+
+
+  Future createProduct(Product product) async {
+    final response = await dio.post('https://fakestoreapi.com/products',
+        data: product.toJson());
+    if (response.statusCode == 200 && response.data != null) {
+      return response.data;
+    } else {
+      return null;
+    }
+  }
 }

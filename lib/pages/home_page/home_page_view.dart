@@ -38,7 +38,9 @@ class HomePageView extends State<HomePage> {
         actions: [
           IconButton(
             icon: Icon(Icons.shopping_cart),
-            onPressed: () {},
+            onPressed: () {
+              context.router.push(CartRoute());
+            },
           ),
         ],
       ),

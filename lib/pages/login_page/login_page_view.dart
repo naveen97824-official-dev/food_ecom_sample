@@ -162,9 +162,9 @@ class LoginPageView extends State<LoginPage> {
             print(snapshot.data);
             return ElevatedButton(
               onPressed: () {
+                  viewModel.createNewProduct();
                 if (viewModel.validateLoginButton()) {
-                  // viewModel.getAllProducts();
-                  context.router.push(LandingRoute());
+                  // context.router.push(LandingRoute());
                 }
               },
               style: ButtonStyle(

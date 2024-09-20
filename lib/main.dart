@@ -1,21 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:food_ecom_sample/pages/login_page/login_page.dart';
 import 'package:food_ecom_sample/router/router.dart';
+import 'package:food_ecom_sample/store/middleware/app_middleware.dart';
+import 'package:food_ecom_sample/store/reducer/app_reducer.dart';
+import 'package:food_ecom_sample/store/state/app_state.dart';
+import 'package:redux_persist_flutter/redux_persist_flutter.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_persist/redux_persist.dart';
 
-void main() {
-  runApp(MyApp());
+Future<Store<AppState>> createStore(persistor, initialState) async {
+  return Store(appReducer,
+      initialState: (initialState == null ||
+              (initialState as AppState).loginState == null)
+          ? AppState.initial()
+          : initialState,
+      middleware: appMiddleWare(persistor));
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final persistor = Persistor<AppState>(
+      storage: FlutterStorage(location: FlutterSaveLocation.sharedPreferences),
+      serializer: JsonSerializer<AppState>(AppState.fromJson),
+      debug: true,
+      throttleDuration: Duration(seconds: 2));
+
+  // Load initial state
+  final initialState = await persistor.load();
+  Store<AppState> store = await createStore(persistor, initialState);
+
+  runApp(MyApp(
+    store: store,
+  ));
+}
+
+class MyApp extends StatefulWidget {
+  final Store<AppState>? store;
+  MyApp({super.key, this.store});
+  @override
+  State<MyApp> createState() => MyAppPage();
+}
+
+class MyAppPage extends State<MyApp> {
   AppRouter appRouter = AppRouter();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      routerConfig: appRouter.config(),
+    return StoreProvider<AppState>(
+      store: widget.store!,
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        routerConfig: appRouter.config(),
+      ),
     );
+
     // return MaterialApp(
     //   title: 'Flutter Demo',
     //   theme: ThemeData(

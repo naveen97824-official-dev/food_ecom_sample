@@ -10,5 +10,6 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: HomeRoute.page, path: '/home'),
         AutoRoute(page: LandingRoute.page, path: '/landing'),
         AutoRoute(page: MenuDetailRoute.page, path: '/menu_detail'),
+        AutoRoute(page: CartRoute.page, path: '/cart'),
       ];
 }

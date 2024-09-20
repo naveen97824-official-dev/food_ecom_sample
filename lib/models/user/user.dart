@@ -10,4 +10,6 @@ class User {
       password: json['password'],
     );
   }
+
+  toJson() => {'emailId': emailId, 'password': password};
 }

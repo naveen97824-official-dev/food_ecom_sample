@@ -41,4 +41,22 @@ class LoginPageViewModel {
       }
     });
   }
+
+  createNewProduct() {
+    Product product = Product(
+      id: 1,
+      title: "title",
+      price: 1.0,
+      description: "description",
+      category: "category",
+      image: "image",
+    );
+    ProductService.shared.createProduct(product).then((onValue) {
+      if (onValue != null) {
+        print("Created successfully");
+      } else {
+        print("error in creation");
+      }
+    });
+  }
 }
