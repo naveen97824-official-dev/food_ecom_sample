@@ -2,7 +2,7 @@ import 'package:food_ecom_sample/models/user/user.dart';
 
 class LoginState {
   User? userDetail;
-
+String? sample;
   LoginState({this.userDetail});
 
   factory LoginState.initial() {
@@ -11,7 +11,7 @@ class LoginState {
     );
   }
 
-  LoginState copyWith({User? userDetail}) {
+  LoginState copyWith({User? userDetail,String}) {
     this.userDetail = userDetail;
     return this;
   }

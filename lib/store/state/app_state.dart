@@ -14,7 +14,7 @@ class AppState {
 
   static AppState fromJson(dynamic json) {
     return AppState(
-      loginState: json['loginState'] != null
+      loginState: json?['loginState'] != null
           ? LoginState.fromJson(json['loginState'])
           : null,
     );

@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:food_ecom_sample/models/menu/menu.dart';
 import 'package:food_ecom_sample/models/menu/product/product.dart';
 import 'package:food_ecom_sample/services/product/product_service.dart';
+import 'package:food_ecom_sample/store/state/app_state.dart';
+
+import 'package:redux/redux.dart';
 
 class HomePageViewModel {
   TextEditingController searchController = TextEditingController();
   List<String> filterChips = ['meals', 'sides', 'snacks', 'drinks'];
   String selectedChip = 'meals';
   List<Product> productList = [];
+  Store<AppState>? tempStore;
 
   dynamic menuDetailJson = [
     {
@@ -28,7 +32,7 @@ class HomePageViewModel {
 
   List<Menu> menuList = [];
 
-    getAllProducts() {
+  getAllProducts() {
     ProductService.shared.getProducts().then((onValue) {
       if (onValue != null) {
         print(onValue);

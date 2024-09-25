@@ -258,10 +258,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_redux
-      sha256: "8985fd9a4f4016be6acc058818b7bc4cd43f65d134e6507a6e017ac5b499cd82"
+      sha256: "3b20be9e08d0038e1452fbfa1fdb1ea0a7c3738c997734530b3c6d0bb5fcdbdc"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.2"
+    version: "0.10.0"
   flutter_svg:
     dependency: "direct main"
     description:

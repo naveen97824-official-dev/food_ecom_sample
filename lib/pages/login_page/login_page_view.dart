@@ -4,11 +4,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:food_ecom_sample/image_asset.dart';
 import 'package:food_ecom_sample/pages/login_page/login_page.dart';
 import 'package:food_ecom_sample/pages/login_page/login_page_view_model.dart';
 import 'package:food_ecom_sample/router/router.gr.dart';
 import 'package:food_ecom_sample/services/product/product_service.dart';
+import 'package:food_ecom_sample/store/state/app_state.dart';
+import 'package:food_ecom_sample/store/state/login_state.dart';
 import 'package:food_ecom_sample/themes/color_theme.dart';
 
 class LoginPageView extends State<LoginPage> {
@@ -21,17 +24,23 @@ class LoginPageView extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          imageSection(),
-          Expanded(child: tabSection()),
-          otherSignSection(),
-        ],
-      ),
-    );
+    return StoreConnector<AppState, LoginState>(onInit: (store) {
+      viewModel.tempStore = store;
+    }, converter: (store) {
+      return store.state.loginState!;
+    }, builder: (context, state) {
+      return Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            imageSection(),
+            Expanded(child: tabSection()),
+            otherSignSection(),
+          ],
+        ),
+      );
+    });
   }
 
   Widget tabSection() {
@@ -162,9 +171,9 @@ class LoginPageView extends State<LoginPage> {
             print(snapshot.data);
             return ElevatedButton(
               onPressed: () {
-                  viewModel.createNewProduct();
+                viewModel.updateStore();
                 if (viewModel.validateLoginButton()) {
-                  // context.router.push(LandingRoute());
+                  context.router.push(LandingRoute());
                 }
               },
               style: ButtonStyle(
@@ -174,7 +183,13 @@ class LoginPageView extends State<LoginPage> {
                     : WidgetStateProperty.all(
                         ColorTheme.colorTheme.primaryLightColor),
               ),
-              child: Text("Click me"),
+              child: AnimatedPadding(
+                padding: viewModel.validateLoginButton()
+                    ? EdgeInsets.all(20.0)
+                    : EdgeInsets.all(8),
+                duration: Duration(milliseconds: 1000),
+                child: Text("Click me"),
+              ),
             );
           },
         ),

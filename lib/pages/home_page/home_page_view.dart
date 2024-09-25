@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:food_ecom_sample/components/menu_item_card/menu_item_card.dart';
@@ -7,6 +8,8 @@ import 'package:food_ecom_sample/models/menu/menu.dart';
 import 'package:food_ecom_sample/pages/home_page/home_page.dart';
 import 'package:food_ecom_sample/pages/home_page/home_page_view_model.dart';
 import 'package:food_ecom_sample/router/router.gr.dart';
+import 'package:food_ecom_sample/store/state/app_state.dart';
+import 'package:food_ecom_sample/store/state/login_state.dart';
 import 'package:food_ecom_sample/themes/color_theme.dart';
 
 class HomePageView extends State<HomePage> {
@@ -24,73 +27,92 @@ class HomePageView extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorTheme.colorTheme.whiteColor,
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: ColorTheme.colorTheme.whiteColor,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            _scaffoldKey.currentState?.openDrawer();
-          },
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.shopping_cart),
-            onPressed: () {
-              context.router.push(CartRoute());
-            },
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
+    return StoreConnector<AppState, LoginState>(
+      onInit: (store) {
+        viewModel.tempStore = store;
+      },
+      converter: (store) {
+        return store.state.loginState!;
+      },
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: ColorTheme.colorTheme.whiteColor,
+          key: _scaffoldKey,
+          appBar: AppBar(
+            backgroundColor: ColorTheme.colorTheme.whiteColor,
+            leading: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                _scaffoldKey.currentState?.openDrawer();
+              },
+            ),
+            actions: [
+              IconButton(
+                icon: Icon(Icons.shopping_cart),
+                onPressed: () {
+                  context.router.push(CartRoute());
+                },
               ),
-              child: Text('Drawer Header'),
-            ),
-            Divider(),
-            ListTile(
-              title: const Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-            ListTile(
-              title: const Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          topSection(),
-          SizedBox(
-            height: 14,
+            ],
           ),
-          chipSection(),
-          SizedBox(
-            height: 14,
+          drawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                  ),
+                  child: Column(
+                    children: [
+                      Text(viewModel.tempStore!.state.loginState?.userDetail
+                              ?.emailId ??
+                          "New user"),
+                      Text(viewModel.tempStore!.state.loginState?.userDetail
+                              ?.password ??
+                          "New user"),
+                    ],
+                  ),
+                ),
+                Divider(),
+                ListTile(
+                  title: const Text('Item 1'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: const Text('Item 2'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+              ],
+            ),
           ),
-          specialOfferSection(),
-          SizedBox(
-            height: 14,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              topSection(),
+              SizedBox(
+                height: 14,
+              ),
+              chipSection(),
+              SizedBox(
+                height: 14,
+              ),
+              specialOfferSection(),
+              SizedBox(
+                height: 14,
+              ),
+              popularSection(),
+            ],
           ),
-          popularSection(),
-        ],
-      ),
+        );
+      },
     );
   }
 

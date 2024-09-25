@@ -26,13 +26,16 @@ void main() async {
       debug: true,
       throttleDuration: Duration(seconds: 2));
 
-  // Load initial state
-  final initialState = await persistor.load();
-  Store<AppState> store = await createStore(persistor, initialState);
-
-  runApp(MyApp(
-    store: store,
-  ));
+  try {
+    // Load initial state
+    final initialState = await persistor.load();
+    Store<AppState> store = await createStore(persistor, initialState);
+    runApp(MyApp(
+      store: store,
+    ));
+  } catch (e) {
+    print(e);
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -43,7 +46,13 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppPage extends State<MyApp> {
-  AppRouter appRouter = AppRouter();
+  AppRouter? appRouter ;
+  @override
+  void initState() {
+    super.initState();
+    appRouter = AppRouter(store: widget.store);
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -51,7 +60,7 @@ class MyAppPage extends State<MyApp> {
       store: widget.store!,
       child: MaterialApp.router(
         title: 'Flutter Demo',
-        routerConfig: appRouter.config(),
+        routerConfig: appRouter?.config(),
       ),
     );
 
