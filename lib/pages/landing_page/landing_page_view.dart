@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_ecom_sample/pages/animation_page/animation_page.dart';
 import 'package:food_ecom_sample/pages/home_page/home_page.dart';
 import 'package:food_ecom_sample/pages/landing_page/landing_page.dart';
 import 'package:food_ecom_sample/themes/color_theme.dart';
@@ -57,7 +58,7 @@ class LandingPageView extends State<LandingPage> {
   Widget switchCase(String value) {
     switch (value) {
       case '0':
-        return Text('Live chat');
+        return AnimationPage();
       case '1':
         return Text('Profile');
       case '2':
