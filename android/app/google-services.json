@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "907331045118",
+    "project_id": "teaching-class-4431a",
+    "storage_bucket": "teaching-class-4431a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:907331045118:android:bfc0a71b34bd590862c7af",
+        "android_client_info": {
+          "package_name": "com.nk.app.food_ecom_sample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeIQrywoGjZgVr-3Qzazi8zjAyxaIdC1M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

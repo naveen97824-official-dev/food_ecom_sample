@@ -11,22 +11,22 @@ class AppRouter extends $AppRouter {
   List<AutoRoute> get routes => [
         AutoRoute(
             page: LoginRoute.page,
-            initial: (store != null &&
-                    store!.state.loginState != null &&
-                    store!.state.loginState!.userDetail != null &&
-                    store!.state.loginState!.userDetail!.emailId != null)
-                ? false
-                : true,
+            // initial: (store != null &&
+            //         store!.state.loginState != null &&
+            //         store!.state.loginState!.userDetail != null &&
+            //         store!.state.loginState!.userDetail!.emailId != null)
+            //     ? false
+            initial: true,
             path: '/login'),
         AutoRoute(page: HomeRoute.page, path: '/home'),
         AutoRoute(
             page: LandingRoute.page,
-            initial: (store != null &&
-                    store!.state.loginState != null &&
-                    store!.state.loginState!.userDetail != null &&
-                    store!.state.loginState!.userDetail!.emailId != null)
-                ? true
-                : false,
+            // initial: (store != null &&
+            //         store!.state.loginState != null &&
+            //         store!.state.loginState!.userDetail != null &&
+            //         store!.state.loginState!.userDetail!.emailId != null)
+            //     ? true
+            //     : false,
             path: '/landing'),
         AutoRoute(page: MenuDetailRoute.page, path: '/menu_detail'),
         AutoRoute(page: CartRoute.page, path: '/cart'),

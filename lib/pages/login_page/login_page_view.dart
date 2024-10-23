@@ -35,6 +35,8 @@ class LoginPageView extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             imageSection(),
+            Text(
+                "A template is a file or pattern that can be used as a starting point for creating a document, website, or other project. Templates can include content, design elements, and formatting, and can be used to save time and create consistent, high-quality products."),
             Expanded(child: tabSection()),
             otherSignSection(),
           ],
@@ -230,7 +232,12 @@ class LoginPageView extends State<LoginPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              otherOptionsButton(ImageAssets.google, 30),
+              InkWell(
+                onTap: () {
+                  viewModel.signInWithGoogle();
+                },
+                child: otherOptionsButton(ImageAssets.google, 30),
+              ),
               SizedBox(
                 width: 14,
               ),

@@ -34,6 +34,8 @@ class CartPageView extends State<CartPage> {
             child: ListView(
               children: [
                 cartItem(),
+                SizedBox(height: 12),
+                cartItem(),
               ],
             ),
           ),

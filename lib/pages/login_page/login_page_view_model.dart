@@ -1,11 +1,13 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:food_ecom_sample/models/menu/product/product.dart';
-import 'package:food_ecom_sample/models/user/user.dart';
+import 'package:food_ecom_sample/models/user/user.dart' as local;
 import 'package:food_ecom_sample/services/product/product_service.dart';
 import 'package:food_ecom_sample/store/action/login/login_action.dart';
 import 'package:food_ecom_sample/store/state/app_state.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:redux/redux.dart';
 class LoginPageViewModel {
   bool isSignIn = true;
@@ -14,7 +16,7 @@ class LoginPageViewModel {
   TextEditingController passwordController = TextEditingController();
   StreamController loginButtonStreamController = StreamController<bool>();
   List<Product> productList = [];
-  User userDetail = User();
+  local.User userDetail = local.User();
   Store<AppState>? tempStore;
 
   bool validateLoginButton() {
@@ -32,6 +34,26 @@ class LoginPageViewModel {
       return true;
     } else {
       return false;
+    }
+  }
+
+
+  Future<dynamic> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } on Exception catch (e) {
+      // TODO
+      print('exception->$e');
     }
   }
 
